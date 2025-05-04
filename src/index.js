@@ -17,7 +17,13 @@ app.get('/', (req, res) => {
 
 // Middleware
 app.use(cors({
-  origin: ['http://localhost:3000', 'http://localhost:3002', 'http://192.168.142.154:3002'],
+  origin: [
+    'http://localhost:3000', 
+    'http://localhost:3002', 
+    'http://192.168.142.154:3002',
+    'https://deploy-frontend-nu.vercel.app',  // Add your production frontend URL here
+    process.env.FRONTEND_URL  // You can also use an environment variable
+  ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
