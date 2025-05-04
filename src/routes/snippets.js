@@ -108,4 +108,54 @@ router.put('/:id', async (req, res) => {
   }
 });
 
+// Toggle bookmark status
+router.patch('/:id/bookmark', async (req, res) => {
+  try {
+    const snippet = await Snippet.findOne({
+      _id: req.params.id,
+      user: req.userId
+    });
+
+    if (!snippet) {
+      return res.status(404).json({ 
+        message: 'Snippet not found or you do not have permission to update it' 
+      });
+    }
+
+    snippet.isBookmarked = !snippet.isBookmarked;
+    await snippet.save();
+    res.json(snippet);
+  } catch (err) {
+    res.status(500).json({ 
+      message: 'Error updating bookmark',
+      error: err.message 
+    });
+  }
+});
+
+// Toggle star status
+router.patch('/:id/star', async (req, res) => {
+  try {
+    const snippet = await Snippet.findOne({
+      _id: req.params.id,
+      user: req.userId
+    });
+
+    if (!snippet) {
+      return res.status(404).json({ 
+        message: 'Snippet not found or you do not have permission to update it' 
+      });
+    }
+
+    snippet.isStarred = !snippet.isStarred;
+    await snippet.save();
+    res.json(snippet);
+  } catch (err) {
+    res.status(500).json({ 
+      message: 'Error updating star',
+      error: err.message 
+    });
+  }
+});
+
 module.exports = router; 
