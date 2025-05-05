@@ -122,10 +122,18 @@ router.patch('/:id/bookmark', async (req, res) => {
       });
     }
 
-    snippet.isBookmarked = !snippet.isBookmarked;
+    // Update bookmark status based on request body
+    if (req.body.isBookmarked !== undefined) {
+      snippet.isBookmarked = req.body.isBookmarked;
+    } else {
+      // If no status provided, toggle the current status
+      snippet.isBookmarked = !snippet.isBookmarked;
+    }
+
     await snippet.save();
     res.json(snippet);
   } catch (err) {
+    console.error('Error updating bookmark:', err);
     res.status(500).json({ 
       message: 'Error updating bookmark',
       error: err.message 
